@@ -21,7 +21,7 @@ CyberMatch is an engaging and educational memory game that challenges players to
 
 ## 🚀 Demo
 
-You can play the game live at [https://dwain-barnes.github.io/cybermatch](https://dwain-barnes.github.io/cyberMatch)
+You can play the game live at [https://dwain-barnes.github.io/cybermatch](https://dwain-barnes.github.io/CyberMatch)
 
 ## 💻 Installation
 
