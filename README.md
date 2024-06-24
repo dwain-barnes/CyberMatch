@@ -53,5 +53,7 @@ No additional dependencies or build steps are required!
 - HTML5
 - CSS3
 - JavaScript
-
+## Acknowledgments
+- Cybersecurity icons created by icons8 from icons8.com
+---
 Happy matching and stay cyber-safe! 🔐🎉
