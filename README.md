@@ -2,7 +2,7 @@
 
 CyberMatch is an engaging and educational memory game that challenges players to match cybersecurity concepts while learning about digital safety. Built with HTML, CSS, and JavaScript, this project combines fun gameplay with important tech literacy.
 
-![CyberMatch Game Screenshot](img/screenshot.png)
+![CyberMatch Game Screenshot](img/screenshot.jpg)
 
 ## 🎮 Features
 
