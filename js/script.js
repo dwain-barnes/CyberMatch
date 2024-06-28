@@ -3,7 +3,7 @@ class MemoryGame {
         this.cards = [];
         this.flippedCards = [];
         this.matchedPairs = 0;
-        this.attempts = 10;
+        this.attempts = 12;
         this.score = 0;
         this.gameOver = false;
 
