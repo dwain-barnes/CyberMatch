@@ -8,7 +8,30 @@
 </head>
 <body>
     <div class="game-container">
-        <div class="game-board">
+        <div id="start-menu" class="menu-screen">
+            <h1>CyberMatch</h1>
+            <button id="start-game">Start Game</button>
+            <button id="how-to-play">How to Play</button>
+            <button id="information">Information</button>
+        </div>
+
+        <div id="how-to-play-screen" class="menu-screen" style="display: none;">
+            <h2>How to Play</h2>
+            <p>1. Click on cards to flip them over.</p>
+            <p>2. Try to find matching pairs of cybersecurity concepts.</p>
+            <p>3. You have 10 attempts to match all pairs.</p>
+            <p>4. Each correct match earns you 10 points.</p>
+            <p>5. The game ends when you match all pairs or run out of attempts.</p>
+            <button class="back-button">Back to Menu</button>
+        </div>
+
+        <div id="information-screen" class="menu-screen" style="display: none;">
+            <h2>Card Information</h2>
+            <div id="card-info-container"></div>
+            <button class="back-button">Back to Menu</button>
+        </div>
+
+        <div id="game-board" class="game-board" style="display: none;">
             <h1>CyberMatch</h1>
             <div class="grid-container">
                 <!-- Cards will be dynamically inserted here -->
@@ -20,7 +43,28 @@
             </div>
             <div id="message"></div>
         </div>
+
+        <div id="end-game-menu" class="menu-screen" style="display: none;">
+            <h2>Game Over</h2>
+            <p id="final-score"></p>
+            <button id="play-again">Play Again</button>
+            <button id="return-main-menu">Main Menu</button>
+        </div>
     </div>
+
+    <!-- Audio elements -->
+    <audio id="backgroundAudio" loop>
+        <source src="audio/background.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="flipAudio">
+        <source src="audio/flip.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="matchAudio">
+        <source src="audio/match.mp3" type="audio/mpeg">
+    </audio>
+    <audio id="mismatchAudio">
+        <source src="audio/mismatch.mp3" type="audio/mpeg">
+    </audio>
 
     <script src="js/cyberConcepts.js"></script>
     <script src="js/script.js"></script>
