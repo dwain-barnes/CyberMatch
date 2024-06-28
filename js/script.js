@@ -7,13 +7,94 @@ class MemoryGame {
         this.score = 0;
         this.gameOver = false;
 
+        this.startMenu = document.getElementById('start-menu');
+        this.howToPlayScreen = document.getElementById('how-to-play-screen');
+        this.informationScreen = document.getElementById('information-screen');
+        this.gameBoard = document.getElementById('game-board');
+        this.endGameMenu = document.getElementById('end-game-menu');
         this.gridContainer = document.querySelector('.grid-container');
         this.messageElement = document.getElementById('message');
         this.attemptsElement = document.getElementById('attempts');
         this.pairsElement = document.getElementById('pairs');
         this.scoreElement = document.getElementById('score');
+        this.finalScoreElement = document.getElementById('final-score');
 
+        // Audio elements
+        this.backgroundAudio = document.getElementById('backgroundAudio');
+        this.flipAudio = document.getElementById('flipAudio');
+        this.matchAudio = document.getElementById('matchAudio');
+        this.mismatchAudio = document.getElementById('mismatchAudio');
+
+        this.audioInitialized = false;
+
+        this.addMenuListeners();
+    }
+
+    addMenuListeners() {
+        document.getElementById('start-game').addEventListener('click', () => this.startGame());
+        document.getElementById('how-to-play').addEventListener('click', () => this.showHowToPlay());
+        document.getElementById('information').addEventListener('click', () => this.showInformation());
+        document.querySelectorAll('.back-button').forEach(button => {
+            button.addEventListener('click', () => this.showStartMenu());
+        });
+        document.getElementById('play-again').addEventListener('click', () => this.startGame());
+        document.getElementById('return-main-menu').addEventListener('click', () => this.showStartMenu());
+    }
+
+    showStartMenu() {
+        this.startMenu.style.display = 'block';
+        this.howToPlayScreen.style.display = 'none';
+        this.informationScreen.style.display = 'none';
+        this.gameBoard.style.display = 'none';
+        this.endGameMenu.style.display = 'none';
+        this.backgroundAudio.pause();
+    }
+
+    showHowToPlay() {
+        this.startMenu.style.display = 'none';
+        this.howToPlayScreen.style.display = 'block';
+    }
+
+    showInformation() {
+        this.startMenu.style.display = 'none';
+        this.informationScreen.style.display = 'block';
+        this.displayCardInformation();
+    }
+
+    displayCardInformation() {
+        const container = document.getElementById('card-info-container');
+        container.innerHTML = '';
+        cyberConcepts.forEach(concept => {
+            const infoDiv = document.createElement('div');
+            infoDiv.classList.add('concept-info');
+            infoDiv.innerHTML = `
+                <div class="concept-header">
+                    <img src="${concept.image}" alt="${concept.name}" class="concept-icon">
+                    <h3>${concept.name}</h3>
+                </div>
+                <p>${concept.description}</p>
+            `;
+            container.appendChild(infoDiv);
+        });
+    }
+
+    startGame() {
+        this.resetGame();
+        this.startMenu.style.display = 'none';
+        this.endGameMenu.style.display = 'none';
+        this.gameBoard.style.display = 'block';
         this.initializeGame();
+        this.playBackgroundMusic();
+    }
+
+    resetGame() {
+        this.cards = [];
+        this.flippedCards = [];
+        this.matchedPairs = 0;
+        this.attempts = 10;
+        this.score = 0;
+        this.gameOver = false;
+        this.backgroundAudio.currentTime = 0;
     }
 
     initializeGame() {
@@ -25,14 +106,10 @@ class MemoryGame {
     }
 
     createCards() {
-        const concepts = cyberConcepts.slice(0, 8); // Use 8 unique concepts
-        this.cards = [...concepts, ...concepts].map((concept, index) => ({
-            id: index,
-            name: concept.name,
-            image: concept.image,
-            isFlipped: false,
-            isMatched: false
-        }));
+        this.cards = cyberConcepts.flatMap((concept, index) => [
+            { id: index * 2, name: concept.name, image: concept.image, isFlipped: false, isMatched: false },
+            { id: index * 2 + 1, name: concept.name, image: concept.image, isFlipped: false, isMatched: false }
+        ]);
     }
 
     shuffleCards() {
@@ -79,7 +156,7 @@ class MemoryGame {
 
     flipCard(cardElement) {
         if (this.gameOver || this.attempts <= 0) {
-            return; // Prevent further plays if game is over or no attempts left
+            return;
         }
 
         const cardId = parseInt(cardElement.dataset.id);
@@ -87,6 +164,8 @@ class MemoryGame {
         card.isFlipped = true;
         cardElement.classList.add('flipped');
         this.flippedCards.push(card);
+
+        this.playFlipSound();
 
         if (this.flippedCards.length === 2) {
             this.attempts--;
@@ -112,6 +191,7 @@ class MemoryGame {
         this.score += 10;
         this.messageElement.textContent = "Match found! +10 points";
         this.flippedCards = [];
+        this.playMatchSound();
         this.checkGameEnd();
     }
 
@@ -121,6 +201,7 @@ class MemoryGame {
             this.flippedCards = [];
             this.updateCardElements();
             this.messageElement.textContent = "No match. Try again!";
+            this.playMismatchSound();
         }, 1000);
     }
 
@@ -142,18 +223,48 @@ class MemoryGame {
     }
 
     checkGameEnd() {
-        if (this.matchedPairs === 8) {
+        if (this.matchedPairs === cyberConcepts.length) {
             this.gameOver = true;
-            this.messageElement.textContent = `Congratulations! You've matched all pairs with a score of ${this.score}!`;
+            this.finalScoreElement.textContent = `Congratulations! You've matched all pairs with a score of ${this.score}!`;
+            this.showEndGameMenu();
         } else if (this.attempts <= 0) {
             this.gameOver = true;
-            this.messageElement.textContent = `Game over! Your final score is ${this.score}.`;
+            this.finalScoreElement.textContent = `Game over! Your final score is ${this.score}.`;
+            this.showEndGameMenu();
         }
 
         if (this.gameOver) {
-            // Disable further card flips
             this.gridContainer.removeEventListener('click', this.handleCardClick);
+            this.backgroundAudio.pause();
         }
+    }
+
+    showEndGameMenu() {
+        this.gameBoard.style.display = 'none';
+        this.endGameMenu.style.display = 'block';
+    }
+
+    playBackgroundMusic() {
+        console.log("Attempting to play background music");
+        this.backgroundAudio.play().catch(e => console.error("Error playing background music:", e));
+    }
+
+    playFlipSound() {
+        console.log("Attempting to play flip sound");
+        this.flipAudio.currentTime = 0;
+        this.flipAudio.play().catch(e => console.error("Error playing flip sound:", e));
+    }
+
+    playMatchSound() {
+        console.log("Attempting to play match sound");
+        this.matchAudio.currentTime = 0;
+        this.matchAudio.play().catch(e => console.error("Error playing match sound:", e));
+    }
+
+    playMismatchSound() {
+        console.log("Attempting to play mismatch sound");
+        this.mismatchAudio.currentTime = 0;
+        this.mismatchAudio.play().catch(e => console.error("Error playing mismatch sound:", e));
     }
 }
 
