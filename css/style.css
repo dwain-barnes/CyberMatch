@@ -94,3 +94,51 @@ body {
     color: #00ff00;
     text-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
 }
+
+.menu-screen {
+    text-align: center;
+    background-color: rgba(20, 20, 20, 0.8);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.2);
+    color: #ffffff;
+}
+
+.menu-screen h1, .menu-screen h2 {
+    margin-bottom: 20px;
+}
+
+.menu-screen button {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #00ff00;
+    color: #000000;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.menu-screen button:hover {
+    background-color: #00cc00;
+}
+
+#card-info-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-top: 20px;
+    text-align: left;
+}
+
+#card-info-container h3 {
+    margin-top: 15px;
+    margin-bottom: 5px;
+    color: #00ff00;
+}
+
+#card-info-container p {
+    margin-bottom: 15px;
+}
